@@ -1,5 +1,12 @@
 {
-  "name": "libp2a",
+  "name": "@p2a/libp2a",
+  "version": "0.1.0",
+  "description": "Official client for the P2A service",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/libp2a/libp2a-ts"
+  },
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
