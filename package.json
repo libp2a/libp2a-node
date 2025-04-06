@@ -1,5 +1,5 @@
 {
-  "name": "@p2a/libp2a",
+  "name": "@libp2a/libp2a",
   "version": "0.1.0",
   "description": "Official client for the P2A service",
   "license": "MIT",
