@@ -49,7 +49,7 @@ export function translateOptionsIntoParams(options: Options) {
 export async function call<T=any>(prompt: string, options: Options = {}): Promise<Result<T>> {
   const data = await request<any>("/api/v1/function/call", {
     method: "POST",
-    body: JSON.stringify({ prompt, ...translateOptionsIntoParams(options) }),
+    params: { prompt, ...translateOptionsIntoParams(options) },
   });
   
   return translateResponseIntoResult<T>(data);
@@ -60,7 +60,7 @@ export async function call<T=any>(prompt: string, options: Options = {}): Promis
 export async function chat<T=any>(prompt: string, options: Options = {}): Promise<Result<T>> {
   const data = await request<any>("/api/v1/function/chat", {
     method: "POST",
-    body: JSON.stringify({ prompt, ...translateOptionsIntoParams(options) }),
+    params: { prompt, ...translateOptionsIntoParams(options) },
   });
 
   return translateResponseIntoResult<T>(data);

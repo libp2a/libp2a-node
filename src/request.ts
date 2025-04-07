@@ -2,13 +2,25 @@ import { BASE_URL } from "./config";
 
 class RequestError extends Error {
   constructor(status: number, message: string) {
-    super(`HTTP ${status}: ${message}`);
+    super(`${status}: ${message}`);
   }
 }
 
-export async function request<T>(path: string, options = {}): Promise<T> {
+type RequestOptions = {
+  method: "GET" | "POST";
+  params?: Record<string, any>;
+}
+
+export async function request<T>(path: string, options: RequestOptions): Promise<T> {
   try {
-    const response = await fetch(`${BASE_URL}${path}`, options);
+    const method = options.method;
+    const body = options.params ? JSON.stringify(options.params) : undefined;
+    const headers = {
+      "User-Agent": "@libp2a/libp2a-node",
+      "Content-Type": "application/json"
+    }
+
+    const response = await fetch(`${BASE_URL}${path}`, { method, body, headers });
 
     if (!response.ok) {
       try {
