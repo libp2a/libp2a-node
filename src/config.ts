@@ -1,1 +1,1 @@
-export const HOST = process.env.P2A_HOST || "https://p2a.telescope.chat";
+export const BASE_URL = process.env.P2A_BASE_URL || "https://p2a.telescope.chat";
