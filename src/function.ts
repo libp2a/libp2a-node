@@ -19,46 +19,57 @@ type RunEvent = {
   data: Record<string, any>;
 };
 
-export function translateResponseIntoResult<T>(data: Record<string, any>) : Result<T> {
-  const run = data.run ? {
-    id: data.run.id,
-    transportName: data.run.transport_name,
-    events: data.run.events,
-  } : undefined;
+export function translateResponseIntoResult<T>(data: {
+  value: T;
+  run?: any;
+}): Result<T> {
+  const run = data.run
+    ? {
+        id: data.run.id,
+        transportName: data.run.transport_name,
+        events: data.run.events,
+      }
+    : undefined;
 
   return {
     value: data.value,
     run,
-  }
+  };
 }
 
 // OPTIONS
 
 type Options = {
   withRunEvents?: boolean;
-}
+};
 
 export function translateOptionsIntoParams(options: Options) {
   return {
     with_run_events: options.withRunEvents,
-  }
+  };
 }
 
 // CALL
 
-export async function call<T=any>(prompt: string, options: Options = {}): Promise<Result<T>> {
-  const data = await request<any>("/api/v1/function/call", {
+export async function call<T = any>(
+  prompt: string,
+  options: Options = {}
+): Promise<Result<T>> {
+  const data = await request<{ value: T; run?: any }>("/api/v1/function/call", {
     method: "POST",
     params: { prompt, ...translateOptionsIntoParams(options) },
   });
-  
+
   return translateResponseIntoResult<T>(data);
 }
 
 // CHAT
 
-export async function chat<T=any>(prompt: string, options: Options = {}): Promise<Result<T>> {
-  const data = await request<any>("/api/v1/function/chat", {
+export async function chat<T = any>(
+  prompt: string,
+  options: Options = {}
+): Promise<Result<T>> {
+  const data = await request<{ value: T; run?: any }>("/api/v1/function/chat", {
     method: "POST",
     params: { prompt, ...translateOptionsIntoParams(options) },
   });
