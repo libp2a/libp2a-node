@@ -6,7 +6,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "bin": {
-    "p2a": "./dist/cli.js"
+    "p2a": "./dist/cli.js",
+    "p2a-mcp": "./dist/mcp-server.js"
   },
   "files": [
     "dist/**"
@@ -27,10 +28,11 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts src/cli.ts --format esm,cjs --dts --shims --clean",
-    "postbuild": "chmod +x dist/cli.js",
+    "build": "tsup src/index.ts src/cli.ts src/mcp-server.ts --format esm,cjs --dts --shims --clean",
+    "postbuild": "chmod +x dist/cli.js dist/mcp-server.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "mcp": "node dist/mcp-server.js"
   },
   "repository": {
     "type": "git",
@@ -53,7 +55,8 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "commander": "^12.0.0",
-    "chalk": "^5.3.0"
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0"
   }
 }

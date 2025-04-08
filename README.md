@@ -6,6 +6,7 @@ This package is a Typescript/Javascript client for the [P2A service](https://p2a
 * [Function chat](#function-chat)
 * [Command Line Interface (CLI)](#command-line-interface-cli)
 * [Local Development](#local-development)
+* [Using as an MCP in Cursor](#using-as-an-mcp-in-cursor)
 
 
 #### Function call
@@ -129,3 +130,35 @@ npm unlink
 ```
 
 Note: If you make changes to the CLI code, you'll need to rebuild the package (`npm run build`) for the changes to take effect.
+
+#### Using as an MCP in Cursor
+
+To use libp2a as a Model Control Protocol (MCP) service in Cursor, follow these steps:
+
+1. First, install the package globally:
+```bash
+npm install -g @libp2a/libp2a
+```
+
+2. Create or update your Cursor MCP configuration file at `~/.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "p2a": {
+      "name": "Prompt to Action (P2A) Service",
+      "command": "p2a-mcp",
+      "type": "stdio",
+      "description": "Address and location service with structured data and natural language processing. Examples:\n- Get full address: 'get the address of Outback downtown Houston'\n- Get specific info: 'what's the zip code for Central Park NY'\n- Find location: 'where is the nearest Starbucks in Manhattan'\n- Extract components: 'get the street name for 123 Main St, Boston MA'"
+    }
+  }
+}
+```
+
+This configuration will:
+- Use the `p2a-mcp` command to interact with the P2A service
+- Run in stdio mode for direct communication
+- Provide helpful examples of the types of queries you can make
+
+The service will now be available in Cursor, allowing you to make location and address-related queries directly from your editor.
+
+Note: Make sure you have set up any required environment variables, such as `P2A_BASE_URL` if you're using a custom P2A service endpoint.
