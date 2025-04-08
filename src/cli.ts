@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { call, chat } from './index';
+import { call, chat } from './index.js';
 
 const program = new Command();
 

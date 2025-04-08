@@ -5,6 +5,7 @@ This package is a Typescript/Javascript client for the [P2A service](https://p2a
 * [Function call](#function-call)
 * [Function chat](#function-chat)
 * [Command Line Interface (CLI)](#command-line-interface-cli)
+* [Local Development](#local-development)
 
 
 #### Function call
@@ -78,3 +79,48 @@ p2a chat --help     # Help for chat command
 ```bash
 p2a --version
 ```
+
+#### Local Development
+
+To build and test the CLI locally:
+
+1. Clone the repository and install dependencies:
+```bash
+git clone https://github.com/libp2a/libp2a-node.git
+cd libp2a-node
+npm install
+```
+
+2. Build the package:
+```bash
+npm run build
+```
+This will:
+- Build both the library and CLI
+- Generate type definitions
+- Make the CLI executable
+
+3. Link the package locally:
+```bash
+npm link
+```
+This creates a symbolic link from the global `node_modules` to your local development directory.
+
+4. Test the CLI:
+```bash
+# Test the version command
+p2a --version
+
+# Test the call command
+p2a call "get the address of Outback downtown Houston"
+
+# Test the chat command
+p2a chat "get the address of zipcode 77042 and return only the city name"
+```
+
+5. To unlink the package when you're done:
+```bash
+npm unlink
+```
+
+Note: If you make changes to the CLI code, you'll need to rebuild the package (`npm run build`) for the changes to take effect.
