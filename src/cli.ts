@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { call, chat } from './index.js';
+import { version } from '../package.json';
 
 const program = new Command();
 
@@ -20,7 +21,7 @@ const handlePrompt = async (prompt: string, mode: 'call' | 'chat' = 'call') => {
 program
   .name('p2a')
   .description('CLI for P2A (Prompt to Action) service')
-  .version('0.1.5')
+  .version(version)
   // Default command when no command is specified
   .argument('[prompt]', 'The prompt to execute (uses call mode by default)')
   .action(async (prompt?: string) => {
