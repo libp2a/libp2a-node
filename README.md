@@ -54,14 +54,19 @@ npm install @libp2a/libp2a
 
 ##### Usage
 
-The CLI provides two main commands:
+The CLI can be used in three ways:
 
-1. **call** - Execute a function and get structured data:
+1. **Direct usage** (uses `call` by default):
+```bash
+p2a "get the address of Outback downtown Houston"
+```
+
+2. **Explicit call** - Execute a function and get structured data:
 ```bash
 p2a call "get the address of Outback downtown Houston"
 ```
 
-2. **chat** - Get processed results based on your prompt:
+3. **Chat mode** - Get processed results based on your prompt:
 ```bash
 p2a chat "get the address of zipcode 77042 and return only the city name"
 ```

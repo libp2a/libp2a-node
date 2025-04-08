@@ -6,24 +6,37 @@ import { call, chat } from './index.js';
 
 const program = new Command();
 
+// Helper function to handle prompts
+const handlePrompt = async (prompt: string, mode: 'call' | 'chat' = 'call') => {
+  try {
+    const { value } = await (mode === 'call' ? call(prompt) : chat(prompt));
+    console.log(mode === 'call' ? JSON.stringify(value, null, 2) : value);
+  } catch (error) {
+    console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error');
+    process.exit(1);
+  }
+};
+
 program
   .name('p2a')
   .description('CLI for P2A (Prompt to Action) service')
-  .version('0.1.5');
+  .version('0.1.5')
+  // Default command when no command is specified
+  .argument('[prompt]', 'The prompt to execute (uses call mode by default)')
+  .action(async (prompt?: string) => {
+    if (prompt) {
+      await handlePrompt(prompt, 'call');
+    } else {
+      program.help();
+    }
+  });
 
 program
   .command('call')
   .description('Execute a function based on the prompt')
   .argument('<prompt>', 'The prompt to execute')
   .action(async (prompt: string) => {
-    try {
-      const { value } = await call(prompt);
-      console.log(chalk.green('Result:'));
-      console.log(JSON.stringify(value, null, 2));
-    } catch (error) {
-      console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error');
-      process.exit(1);
-    }
+    await handlePrompt(prompt, 'call');
   });
 
 program
@@ -31,14 +44,7 @@ program
   .description('Chat with the service and get processed results')
   .argument('<prompt>', 'The prompt to process')
   .action(async (prompt: string) => {
-    try {
-      const { value } = await chat(prompt);
-      console.log(chalk.green('Result:'));
-      console.log(value);
-    } catch (error) {
-      console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error');
-      process.exit(1);
-    }
+    await handlePrompt(prompt, 'chat');
   });
 
 program.parse(process.argv);
