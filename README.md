@@ -1,7 +1,7 @@
 # libp2a
 
 libp2a provides access to the
-[P2A service](https://p2a.telescope.chat/api/v1/docs) from
+[P2A API](https://p2a.telescope.chat/api/v1/docs) from
 Javascript and Typescript.
 
 * [Installation](#installation)
@@ -28,9 +28,8 @@ npm install -g @libp2a/libp2a
 
 # Introduction
 
-libp2a provides access to hundreds of APIs and services with a single function
-call. It accepts a description of one or more actions, it executes the actions
-and returns a result.
+libp2a provides access to hundreds of APIs using natural language and a single
+authentication mechanism. For example:
 
 ```ts
 import { call } from "@libp2a/libp2a"
@@ -51,11 +50,11 @@ app.get("/address/report", async (req, res) => {
 
 Implementing software integrations is a tedious process. Boring, not hard.
 We have learn how the other software works, which endpoints are available, learn
-names and types, learn the ever slightly different authentication mechanisms.
+the names and the types, learn the ever slightly different authentication
+mechanisms.
 
-libp2a's goal is to be the only SDK you need to integrate with any web service.
-The ingrations are implemented using natural language that makes sense to you
-and your problem domain.
+libp2a aims to be the only SDK needed to integrate with any API, using natural
+language familiar to you and your problem domain. 
 
 # Usage
 
@@ -65,21 +64,22 @@ libp2a provides two functions: `call` and `chat`.
 
 The `call` function executes one or more actions and returns a result.
 The execution plan is guaranteed to be the same for the same prompt key,
-and results are guaranteed to always have the same format for the prompt key.
-
-The `call` function is meant to be deployed to production.
+and results are guaranteed to always have the same format. The `call` function
+is meant to be deployed to production.
 
 ```ts
 import { call } from "@libp2a/libp2a"
 
-const result = await call`get the address of Outback downtown Houston`
+const { value } = await call`get the address of Outback downtown Houston`
 
-console.log(result) // # => { "full": "10001 Westheimer Rd #1010, Houston, TX 77042, USA", "postal_code": "77042", "street_name": "Westheimer Road", "complement": "1010", "neighborhood": "Westside", "city_name": "Houston", "state_name": "Texas", "state_code": "TX", "country_name": "United States", "country_code": "US" }
+console.log(value) // # => { "full": "10001 Westheimer Rd #1010, Houston, TX 77042, USA", "postal_code": "77042", "street_name": "Westheimer Road", "complement": "1010", "neighborhood": "Westside", "city_name": "Houston", "state_name": "Texas", "state_code": "TX", "country_name": "United States", "country_code": "US" }
 ```
 
 ## Chat
 
-The `chat` function executes one or more actions and returns a string.
+The `chat` function executes one or more actions and returns a string. The
+executing plan is reevaluated on every call. The `chat` function is meant to
+assist during development and should not be deployed to production.
 
 ```ts
 import { chat } from "libp2a"
