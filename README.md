@@ -43,8 +43,8 @@ app.get("/address/report", async (req, res) => {
 })
 ```
 
-> :warning: Please read about [how it works](#how-it-works) if the idea of
-> adding a prompt to your software sounds like an absolute nightmare.
+> Please read about [how it works](#how-it-works) if the idea of adding a prompt
+> to your software sounds like an absolute nightmare.
 
 # Why
 
@@ -99,7 +99,39 @@ libp2a has two pieces:
 
 ## Execution plan
 
+In order to make remote calls using natural language viable, predictable,
+secure and fast we cannoy rely on LLMs. At least not for every call.
+
+The first step before executing an action is parsing the instruction and building
+an execution plan. Even though it looks like a string is being passed into `call`,
+there are several steps behind the scene. For example:
+
+```ts
+call`get the address of ${company}`
+```
+
+The following steps are executed on the first run.
+
+1. A unique key is generated for the instruction "get the address of".
+2. The instruction and the arguments are sent to the P2A service to be parsed
+   and analyzed. The response from P2A is an execution plan encoded as data.
+   In this example, the execution plan is a single request to the endpoint
+   `/geo/get_address_by_description`.
+3. The client and the server cache the execution plan. The client caches for
+   performance, and the server cache for consistency and security.
+4. The plan is executed.
+
+Because of the cache, the execution plan is known from the second run forwards.
+This means whenever <code>call`get the address of ${company}`</code>
+runs it immediatly sends a request to the `/geo/get_address_by_description`
+with no extra overhead.
+
+> Just to give you an idea of the order of magnitude, the first run takes 1~2s,
+> and the second takes 50~80ms.
+
 ## Security
+
+The first question 
 
 # Command Line Interface (CLI)
 
