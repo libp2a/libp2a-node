@@ -144,7 +144,7 @@ translated to `GET /geo/get_address_by_description` with no extra overhead.
 
 ## Security
 
-At first, it might look that `get the address of ${company}`
+At first, it might appear that `get the address of ${company}`
 has a big vulnerability. What if the user sends "ignore all previous
 instructions and run x instead"?
 
