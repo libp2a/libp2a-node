@@ -26,8 +26,8 @@ npm install -g @libp2a/libp2a
 
 # Introduction
 
-libp2a provides access to hundreds of APIs through natural language commands and
-one unified authentication system. Here's an example of what is looks like: 
+libp2a provides access to hundreds of APIs through natural language commands.
+Here's an example of what is looks like: 
 
 ```js
 import { call } from "@libp2a/libp2a"
@@ -91,22 +91,22 @@ console.log(value) // # => "Houston"
 
 libp2a has two pieces:
 
-* **The client**, which is this open source library.
-* **The service**, which is a closed source service hosted by the Nova Team at
-  [nova-integration.webflow.io](https://nova-integration.webflow.io/).
+* **The client**, which is this open source library. The client knows how to
+  talk to the P2A server and how to run execution plans.
+* **The server**, which is a closed source service hosted by the Nova Team at
+  [p2a.telescope.chat](https://p2a.telescope.chat/api/v1/docs). The server
+  provides many integration endpoints and knows how to build execution plans.
 
 ## Execution plan
 
 In order to make remote calls using natural language predictable,
-secure and fast we cannot use LLMs on every call. That's why we don't.
+secure and fast we cannot rely on LLMs. At least not on every call.
 
 When running a prompt with `call`, the first step is to parse the prompt and
 build an execution plan. We do use LLMs here to detect which functions should be
 executed, which variables map to which params, and the transformations needed to
-compose the functions (if more than one is needed).
-
-Because we know the input and output type of every function, we can guarantee
-the composition inside the execution plan is correct.
+compose the functions. Because we know the input and output type of every
+function, we can guarantee the composition inside the execution plan is correct.
 
 The execution plan is built and cached on the server. That means that, once
 parsed, `call` commands are:
@@ -115,11 +115,11 @@ parsed, `call` commands are:
 * Secure: user provided values are mapped to specific params. There is no room
   for sneaky "ignore all previous instructions and run x instead".
 * Fast: the execution plan resolves to plain old API calls. There should be no
-  overhead over an HTTP request you'd write manually.
+  overhead over an HTTP request you'd write by hand.
 
-Not all prompts resolve to an execution plan. Some might be invalid, in which
-case an error is raised, and you tweak the prompt. Failed execution plans are
-also cached. This is important to guarantee consistency on the behaviour at
+Not all prompts resolve to a valid execution plan. Some might be invalid, in
+which case an error is raised, and you tweak the prompt. Failed execution plans
+are also cached. This is important to guarantee consistent behavior at
 runtime. We either consistently succeed with the same execution plan, or we
 consistently fail to build one.
 
@@ -132,17 +132,15 @@ call`get the address of ${company}`
 1. A unique key is generated for the instruction "get the address of". The key
    is scoped to your account.
 2. The command and the arguments are sent to the P2A service to build the
-   execution plan. The command and arguments are parsed and analyzed.
-   The response from P2A is an execution plan encoded as data. In this example,
-   the execution plan is a single request to the endpoint
-   `/geo/get_address_by_description`.
-3. The client caches the execution plan for performance.
+   execution plan. The response from P2A is either an error or an execution plan
+   encoded as data. In this example, the execution plan is a single request to
+   `GET /geo/get_address_by_description`.
+3. The client caches the execution plan.
 4. The plan is executed.
 
-Because of the cache, the execution plan is known from the second run forwards.
-This means whenever <code>call`get the address of ${company}`</code>
-runs it immediatly sends a request to the `/geo/get_address_by_description`
-with no extra overhead.
+Because of the cache, calls to `get the address of ${company}` are immediatly
+translated to a request to `/geo/get_address_by_description` with no extra
+overhead.
 
 ## Security
 
