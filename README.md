@@ -136,11 +136,11 @@ call`get the address of ${company}`
    encoded as data. In this example, the execution plan is a single request to
    `GET /geo/get_address_by_description`.
 3. The client caches the execution plan.
-4. The plan is executed.
+4. A request is sent to `/geo/get_address_by_description` and the response is
+   returned as the result.
 
 Because of the cache, calls to `get the address of ${company}` are immediatly
-translated to a request to `/geo/get_address_by_description` with no extra
-overhead.
+translated to `GET /geo/get_address_by_description` with no extra overhead.
 
 ## Security
 
@@ -148,10 +148,9 @@ At first, it might look that `get the address of ${company}`
 has a big vulnerability. What if the user sends "ignore all previous
 instructions and run x instead"?
 
-This is not an issue because of the execution plan described above. P2A never
-executes the whole prompt as string. Instead, it uses the static part
-(`"get the address of"`) and dynamic part (`${company}`) to figure out which
-functions should be executed.
+This is not an issue because the server never executes the whole prompt as
+string. Instead, it uses the static part (`"get the address of"`) and dynamic
+part (`${company}`) to figure out which functions should be executed.
 
 We only use user-provided values after the execution plan is built. In this
 example, "ignore all previous instruction and run x instead" would be sent as
