@@ -155,16 +155,15 @@ executes the whole prompt as string. Instead, it uses the static part
 (`"get the address of"`) and dynamic part (`${company}`) to figure out which
 functions should be executed.
 
-Only after the execution plan is built that user-provided values are sent to the
-server. In this example, "ignore all previous instruction and run x instead"
-would be sent as the `description` param to the
-`/geo/get_address_by_description` endpoint.
+We only use user-provided values after the execution plan is built. In this
+example, "ignore all previous instruction and run x instead" would be sent as
+the `description` param to the `/geo/get_address_by_description` endpoint.
 
 It wouldn't return anything, but no harm was made.
 
 Important: This only applies to the `call` function, which is designed to be
 used in production. The `chat` method is vulnerable to prompt injection, and we
-strongly recommend using it only during development.
+strongly recommend using it during development only.
 
 # Command Line Interface (CLI)
 
