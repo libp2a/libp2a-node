@@ -48,7 +48,7 @@ app.get("/address/report", async (req, res) => {
 
 Implementing software integrations is a tedious process. Boring, not hard.
 We have learn how the other software works, which endpoints are available, learn
-the names and the types, learn the ever slightly different authentication
+the names and the types, implement the ever slightly different authentication
 mechanisms.
 
 libp2a aims to be the only SDK needed to integrate with any API using natural
@@ -100,14 +100,13 @@ libp2a has two pieces:
 In order to make remote calls using natural language predictable,
 secure and fast we cannot use LLMs on every call. That's why we don't.
 
-When running a command with `call`, the first step is to parse the prompt and
+When running a prompt with `call`, the first step is to parse the prompt and
 build an execution plan. We do use LLMs here to detect which functions should be
 executed, which variables map to which params, and the transformations needed to
 compose the functions (if more than one is needed).
 
 Because we know the input and output type of every function, we can guarantee
-the compositions inside the execution plan are correct. This does not mean
-that all prompts are valid
+the composition inside the execution plan is correct.
 
 The execution plan is built and cached on the server. That means that, once
 parsed, `call` commands are:
@@ -117,6 +116,12 @@ parsed, `call` commands are:
   for sneaky "ignore all previous instructions and run x instead".
 * Fast: the execution plan resolves to plain old API calls. There should be no
   overhead over an HTTP request you'd write manually.
+
+Not all prompts resolve to an execution plan. Some might be invalid, in which
+case an error is raised, and you tweak the prompt. Failed execution plans are
+also cached. This is important to guarantee consistency on the behaviour at
+runtime. We either consistently succeed with the same execution plan, or we
+consistently fail to build one.
 
 Let's look at a concrete example with following code:
 
