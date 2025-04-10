@@ -47,9 +47,9 @@ app.get("/address/report", async (req, res) => {
 # Why
 
 Implementing software integrations is a tedious process. Boring, not hard.
-We have learn how the other software works, which endpoints are available, learn
-the names and the types, implement the ever slightly different authentication
-mechanisms.
+We have to learn how the other software works, which endpoints are available,
+learn the names and the types, implement the ever slightly different
+authentication mechanisms.
 
 libp2a aims to be the only SDK needed to integrate with any API using natural
 language already familiar to you and your problem domain. 
