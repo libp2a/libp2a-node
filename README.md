@@ -2,17 +2,17 @@
 
 libp2a provides access to the P2A service from Javascript and Typescript.
 
-* [Installation](#installation)
-* [Introduction](#introduction)
-* [Why](#why)
-* [Usage](#usage)
-  - [Call](#call)
-  - [Chat](#chat)
-* [How it works](#how-it-works)
-  - [Execution plan](#execution-plan)
-  - [Security](#security)
-* [Command Line Interface (CLI)](#command-line-interface-cli)
-* [Contributing](#contributing)
+1. [Installation](#installation)
+2. [Introduction](#introduction)
+3. [Why](#why)
+4. [Usage](#usage)
+    - [Call](#call)
+    - [Chat](#chat)
+5. [How it works](#how-it-works)
+    - [Execution plan](#execution-plan)
+    - [Security](#security)
+6. [Command Line Interface (CLI)](#command-line-interface-cli)
+7. [Contributing](#contributing)
 
 # Installation
 
