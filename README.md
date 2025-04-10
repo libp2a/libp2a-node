@@ -61,9 +61,9 @@ libp2a provides two functions: `call` and `chat`.
 ## Call
 
 The `call` function executes one or more actions and returns a result.
-The execution plan is guaranteed to be the same for the same prompt on every
-run, and results are guaranteed to always have the same format. The `call`
-function is meant to be deployed to production.
+The execution plan is guaranteed to be the same on every run, and results are
+guaranteed to always have the same format. The `call` function is meant to be
+deployed to production.
 
 ```ts
 import { call } from "@libp2a/libp2a"
@@ -76,8 +76,8 @@ console.log(value) // # => { "full": "...", "postal_code": "...", "street_name":
 ## Chat
 
 The `chat` function executes one or more actions and returns a string. The
-execution plan is reevaluated on every call. The `chat` function is meant to
-assist during development and should not be deployed to production.
+execution plan is reevaluated on every run. Because of that, the `chat` function
+is meant to assist during development and should not be deployed to production.
 
 ```ts
 import { chat } from "libp2a"
@@ -89,13 +89,13 @@ console.log(value) // # => "Houston"
 
 # How it works
 
-libp2a has two pieces:
+libp2a works in a client-server architecture:
 
 * **The client**, which is this open source library. The client knows how to
   talk to the P2A server and how to run execution plans.
-* **The server**, which is a closed source service hosted by the Nova Team at
-  [p2a.telescope.chat](https://p2a.telescope.chat/api/v1/docs). The server
-  provides many integration endpoints and knows how to build execution plans.
+* **The server**, which is a closed source service hosted by the Nova Team. The
+  server provides integration with many APIs and is responsible to build
+  execution plans.
 
 ## Execution plan
 
@@ -144,7 +144,7 @@ overhead.
 
 ## Security
 
-At first, it might look that <code>call`get the address of ${company}`</code>
+At first, it might look that `get the address of ${company}`
 has a big vulnerability. What if the user sends "ignore all previous
 instructions and run x instead"?
 
@@ -155,9 +155,8 @@ functions should be executed.
 
 We only use user-provided values after the execution plan is built. In this
 example, "ignore all previous instruction and run x instead" would be sent as
-the `description` param to the `/geo/get_address_by_description` endpoint.
-
-It wouldn't return anything, but no harm was made.
+the `description` param to the `/geo/get_address_by_description` endpoint. It
+wouldn't return anything, but no harm was made.
 
 Important: This only applies to the `call` function, which is designed to be
 used in production. The `chat` method is vulnerable to prompt injection, and we
