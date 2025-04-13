@@ -27,7 +27,7 @@ npm install -g @libp2a/libp2a
 # Introduction
 
 libp2a provides access to hundreds of APIs through natural language commands.
-Here's an example of what is looks like: 
+Here's an example of what it looks like: 
 
 ```js
 import { call } from "@libp2a/libp2a"
